@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.lang.annotation.IncompleteAnnotationException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public String selectedDate, fileName;
+    public String selectedDate;
     public static Context context;
 
     ImageView search, write;
@@ -50,18 +51,25 @@ public class MainActivity extends AppCompatActivity {
                 int selectMonth = month+1;
                 int selectDay = dayOfMonth;
 
-
-
-
                 //선택한 날짜 저장
                 selectedDate = (Integer.toString(selectYear) + "년 "
                         + Integer.toString(selectMonth) + "월 "
                         + Integer.toString(selectDay) + "일");
 
+
+/*
+                String saved_fileName = ((writing_window)writing_window.context).set_fileName;
+*/
+
+               //선택 날짜에 저장된 일기가 있는 경우 일기 제목을 보여줌
+                String str = readDiary(selectedDate);
+                showDiary.setVisibility(View.VISIBLE);
+                showDiary.setText(str);
+
+
                 //편집창 열기
                 Intent intent = new Intent(getApplicationContext(),writing_window.class);
                 startActivity(intent);
-
             }
 
         });
@@ -70,6 +78,27 @@ public class MainActivity extends AppCompatActivity {
         context=this;
 
     }
+        //저장된 일기를 불러오는 함수
+        String readDiary(String fName){
+            String diaryStr = null;
+            FileInputStream inFs;
+            try{
+                inFs = openFileInput(fName);
+                byte[] txt = new byte[500];//500=>diaryStr.available()
+                inFs.read(txt);
+                inFs.close();
+                diaryStr = (new String(txt)).trim();
+
+            }catch (IOException e){
+                Toast.makeText(getApplicationContext(), "저장된 일기가 없습니다.", Toast.LENGTH_SHORT).show();
+
+                //편집창 열기
+                /*Intent intent = new Intent(getApplicationContext(),writing_window.class);
+                startActivity(intent);*/
+
+            }
+            return diaryStr;
+        }
 
 
 

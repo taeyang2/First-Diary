@@ -32,12 +32,15 @@ import static android.content.ContentValues.TAG;
 
 public class writing_window extends Activity {
 
+    public String set_fileName;
+    public static Context context;
+
+
     private DatePickerDialog.OnDateSetListener callbackMethod;
 
     ImageView header;
     Button cancle, save;
     EditText set_date, set_title, writing_area;
-    String set_fileName;
 
 
     @Override
@@ -72,17 +75,18 @@ public class writing_window extends Activity {
             public void onClick(View v) {
 
                 try {
-                    set_fileName = set_title.getText().toString();
+                    set_fileName = set_date.getText().toString();
                     FileOutputStream outFs = openFileOutput(set_fileName, Context.MODE_PRIVATE);
-                    String str = writing_area.getText().toString();
+                    String str = set_title.getText().toString();
                     outFs.write(str.getBytes());
                     outFs.close();
-                    Toast.makeText(getApplicationContext(), set_fileName+"이 저장됨", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), set_fileName+"저장됨", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                 }
                             }
         });
 
+        context=this;
 
 
 
