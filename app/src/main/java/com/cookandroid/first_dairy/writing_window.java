@@ -81,6 +81,7 @@ public class writing_window extends Activity {
                     outFs.write(str.getBytes());
                     outFs.close();
                     Toast.makeText(getApplicationContext(), set_fileName+"저장됨", Toast.LENGTH_SHORT).show();
+                    finish();
                 } catch (IOException e) {
                 }
                             }
